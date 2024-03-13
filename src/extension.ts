@@ -8,10 +8,11 @@ export function activate(context: vscode.ExtensionContext) {
   if (activeEditor) {
     const filePath = activeEditor.document.uri.fsPath;
     const fileName = path.basename(filePath);
+    console.log(fileName)
     const jsonFilePath = path.join(vscode.workspace.rootPath || '', 'fileData.json');
 
     fs.readFile(jsonFilePath, 'utf8', (err, data) => {
-      let fileData = {};
+      let fileData :any = {};
       if (!err) {
         // If the file exists and it is not empty, parse the JSON
         if (data.trim() !== '') {
@@ -38,6 +39,8 @@ export function activate(context: vscode.ExtensionContext) {
   }
 }));
 
+//Hello World Command
+
   const command = 'track-files.sayHello';
   const commandHandler = (name: string = 'world') => {
     vscode.window.showInformationMessage(`Hello ${name}!!!`);
@@ -49,10 +52,12 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.showInformationMessage('Hello World from track-files!');
   }));
 
-  vscode.window.onDidChangeTextEditorSelection(event => {
-    const selectedText = vscode.window.activeTextEditor?.document?.getText(event.selections[0]);
-    if (selectedText) {
-      vscode.window.showInformationMessage(`Selected text: ${selectedText}`);
-    }
-  });
+  context.subscriptions.push(
+    vscode.window.onDidChangeTextEditorSelection(event => {
+      const selectedText = vscode.window.activeTextEditor?.document?.getText(event.selections[0]);
+      if (selectedText) {
+        vscode.window.showWarningMessage(`Selected text: ${selectedText}`);
+      }
+    })
+  );
 }
