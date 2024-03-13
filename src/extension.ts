@@ -9,7 +9,8 @@ export function activate(context: vscode.ExtensionContext) {
     const filePath = activeEditor.document.uri.fsPath;
     const fileName = path.basename(filePath);
     console.log(fileName)
-    const jsonFilePath = path.join(vscode.workspace.rootPath || '', 'fileData.json');
+    const jsonFilePath = path.join( vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+      ? vscode.workspace.workspaceFolders[0].uri.fsPath : '', 'fileData.json');
 
     fs.readFile(jsonFilePath, 'utf8', (err, data) => {
       let fileData :any = {};
